@@ -1,5 +1,6 @@
-package de.meonwax;
+package de.meonwax.radiotray;
 
+import de.meonwax.radiotray.audio.Radio;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

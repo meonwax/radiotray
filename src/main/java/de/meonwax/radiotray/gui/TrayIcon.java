@@ -1,4 +1,4 @@
-package de.meonwax;
+package de.meonwax.radiotray.gui;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;

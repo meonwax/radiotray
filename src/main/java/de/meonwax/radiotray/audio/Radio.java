@@ -1,14 +1,13 @@
-package de.meonwax;
-
-import java.util.List;
+package de.meonwax.radiotray.audio;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import uk.co.caprica.vlcj.binding.internal.libvlc_media_t;
 import uk.co.caprica.vlcj.component.AudioMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.MediaPlayer;
 import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
+
+import java.util.List;
 
 public class Radio {
 
