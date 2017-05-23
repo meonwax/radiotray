@@ -21,10 +21,9 @@ import dorkbox.systemTray.SystemTray;
 public class Tray {
 
     private SystemTray tray;
+    private Player player;
 
-    private Radio radio;
-
-    public Tray(Radio radio) {
+    public Tray(Player player) {
 
         SystemTray.FORCE_GTK2 = true;
 
@@ -33,7 +32,7 @@ public class Tray {
             throw new RuntimeException("Unable to load SystemTray!");
         }
 
-        this.radio = radio;
+        this.player = player;
 
         tray.setImage(loadImage("/icon-white.png"));
 
@@ -47,13 +46,13 @@ public class Tray {
         tray.getMenu().add(separator);
 
         addItem("Stop", e -> {
-            radio.stop();
+            player.stop();
             tray.setStatus("Stopped");
         });
 
         addItem("Quit", e -> {
-            radio.stop();
-            radio.quit();
+            player.stop();
+            player.quit();
             tray.shutdown();
         });
     }
@@ -74,8 +73,8 @@ public class Tray {
                 String title = (String) station.get("title");
                 String mrl = (String) station.get("mrl");
                 addItem(title, e -> {
-                    radio.stop();
-                    radio.play(mrl);
+                    player.stop();
+                    player.play(mrl);
                     tray.setStatus("Playing " + title);
                 });
             }
@@ -98,7 +97,7 @@ public class Tray {
         ImageIcon imageIcon = new ImageIcon(loadImage("/icon-white.png"));
         item.setIcon(imageIcon);
         // TODO: Dummy image
-        item.addActionListener(e -> action.accept(e));
+        item.addActionListener(action::accept);
         tray.getMenu().add(item);
     }
 }

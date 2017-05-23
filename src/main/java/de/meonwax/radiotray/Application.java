@@ -22,22 +22,22 @@ public class Application {
 
         LOGGER.info("*** Internet Radio Player ***");
 
-        Radio radio = new Radio();
-        Tray tray = new Tray(radio);
-//        radio.play("http://nsbradio.co.uk/listen128k.pls");
-        // radio.play("http://metafiles.gl-systemhaus.de/hr/hrinfo_2.m3u");
-        // radio.play("http://mp3.planetradio.de/planetradio/hqlivestream.aac");
+        Player player = new Player();
+        Tray tray = new Tray(player);
+//        player.play("http://nsbradio.co.uk/listen128k.pls");
+        // player.play("http://metafiles.gl-systemhaus.de/hr/hrinfo_2.m3u");
+        // player.play("http://mp3.planetradio.de/planetradio/hqlivestream.aac");
 
         // 404
-        // radio.play("http://streams.br-online.de/br-klassik_2.asx");
+        // player.play("http://streams.br-online.de/br-klassik_2.asx");
 
         // ASX with AAC
-        // radio.play("http://www.ebm-radio.de/tunein/EBM_Radio-wma.asx");
+        // player.play("http://www.ebm-radio.de/tunein/EBM_Radio-wma.asx");
 
         // MMS with WMA
-        // radio.play("mms://apasf.apa.at/radio_kaernten");
+        // player.play("mms://apasf.apa.at/radio_kaernten");
 
-        // radio.play("mms://apasf.apa.at/radio_kaernten");
+        // player.play("mms://apasf.apa.at/radio_kaernten");
 
 //        try {
 //            Thread.currentThread().join();

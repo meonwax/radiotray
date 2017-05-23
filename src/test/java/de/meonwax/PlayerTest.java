@@ -4,13 +4,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-public class RadioTest extends TestCase {
+public class PlayerTest extends TestCase {
     /**
      * Create the test case
      *
      * @param testName name of the test case
      */
-    public RadioTest(String testName) {
+    public PlayerTest(String testName) {
         super(testName);
     }
 
@@ -18,7 +18,7 @@ public class RadioTest extends TestCase {
      * @return the suite of tests being tested
      */
     public static Test suite() {
-        return new TestSuite(RadioTest.class);
+        return new TestSuite(PlayerTest.class);
     }
 
     /**

@@ -9,31 +9,31 @@ import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
 
 import java.util.List;
 
-public class Radio {
+public class Player {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Radio.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Player.class);
 
     private final AudioMediaPlayerComponent mediaPlayerComponent;
 
-    public Radio() {
-        LOGGER.info("Creating new Radio");
+    public Player() {
+        LOGGER.info("Creating new player");
 
         mediaPlayerComponent = new AudioMediaPlayerComponent();
         mediaPlayerComponent.getMediaPlayer().addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
 
             @Override
             public void opening(MediaPlayer mediaPlayer) {
-                LOGGER.info("Media player opening with url {}", mediaPlayer.getMediaMeta().getTitle());
+                LOGGER.info("Opening mrl {}", mediaPlayer.getMediaMeta().getTitle());
             }
 
             @Override
             public void playing(MediaPlayer mediaPlayer) {
-                LOGGER.info("Media player playing");
+                LOGGER.info("Playback started");
             }
 
             @Override
             public void stopped(MediaPlayer mediaPlayer) {
-                LOGGER.info("Media player stopped");
+                LOGGER.info("Playback stopped");
             }
 
             @Override
@@ -44,7 +44,7 @@ public class Radio {
 
             @Override
             public void finished(MediaPlayer mediaPlayer) {
-                LOGGER.info("Media player finished");
+                LOGGER.info("Player finished");
 
                 // LOGGER.info("subItemCount: {}", mediaPlayer.subItemCount());
 
@@ -59,14 +59,14 @@ public class Radio {
                     // LOGGER.info("subItems: {}", subItems);
                     // mediaPlayer.playMedia(subItemMrl);
 
-                    new Radio().play(subItemMrl);
+                    new Player().play(subItemMrl);
                 }
                 mediaPlayerComponent.release();
             }
 
             @Override
             public void error(MediaPlayer mediaPlayer) {
-                LOGGER.error("Media player error");
+                LOGGER.error("Player error");
                 mediaPlayerComponent.release();
             }
         });
