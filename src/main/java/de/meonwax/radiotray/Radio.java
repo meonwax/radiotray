@@ -34,13 +34,7 @@ public class Radio {
             @Override
             public void stopped(MediaPlayer mediaPlayer) {
                 LOGGER.info("Media player stopped");
-                mediaPlayerComponent.release();
             }
-
-//            @Override
-//            public void buffering(MediaPlayer mediaPlayer, float newCache) {
-//                LOGGER.info("Buffering: {}", newCache);
-//            }
 
             @Override
             public void mediaSubItemAdded(MediaPlayer mediaPlayer, libvlc_media_t subItem) {
@@ -81,5 +75,15 @@ public class Radio {
     public void play(String mrl) {
         LOGGER.info("Playing media {}", mrl);
         mediaPlayerComponent.getMediaPlayer().playMedia(mrl);
+    }
+
+    public void stop() {
+        LOGGER.info("Stopping playback");
+        mediaPlayerComponent.getMediaPlayer().stop();
+    }
+
+    public void quit() {
+        LOGGER.info("Quit player");
+        mediaPlayerComponent.getMediaPlayer().release();
     }
 }

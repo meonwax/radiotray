@@ -37,7 +37,7 @@ public class Tray {
 
         tray.setImage(loadImage("/icon-white.png"));
 
-        tray.setStatus("Idle");
+        tray.setStatus("Stopped");
 
         JSeparator separator = new JSeparator();
         tray.getMenu().add(separator);
@@ -46,7 +46,16 @@ public class Tray {
 
         tray.getMenu().add(separator);
 
-        addItem("Quit", e -> tray.shutdown());
+        addItem("Stop", e -> {
+            radio.stop();
+            tray.setStatus("Stopped");
+        });
+
+        addItem("Quit", e -> {
+            radio.stop();
+            radio.quit();
+            tray.shutdown();
+        });
     }
 
     private Image loadImage(String filename) {
@@ -65,6 +74,7 @@ public class Tray {
                 String title = (String) station.get("title");
                 String mrl = (String) station.get("mrl");
                 addItem(title, e -> {
+                    radio.stop();
                     radio.play(mrl);
                     tray.setStatus("Playing " + title);
                 });
