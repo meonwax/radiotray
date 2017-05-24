@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
@@ -13,12 +12,20 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
 
+import de.meonwax.radiotray.stations.Group;
+import de.meonwax.radiotray.stations.Station;
+import dorkbox.systemTray.Menu;
 import dorkbox.systemTray.SystemTray;
 
 public class Tray {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Tray.class);
 
     private SystemTray tray;
     private Player player;
@@ -34,70 +41,93 @@ public class Tray {
 
         this.player = player;
 
-        tray.setImage(loadImage("/icon-white.png"));
+        tray.setImage(loadImage("/transmission-white.png"));
 
         tray.setStatus("Stopped");
 
         JSeparator separator = new JSeparator();
         tray.getMenu().add(separator);
 
-        createStationItems();
+        createMenuItems();
 
         tray.getMenu().add(separator);
 
-        addItem("Stop", e -> {
-            player.stop();
-            tray.setStatus("Stopped");
-        });
+        addItem(tray.getMenu(),
+                "Stop",
+                e -> {
+                    player.stop();
+                    tray.setStatus("Stopped");
+                });
 
-        addItem("Quit", e -> {
-            player.stop();
-            player.quit();
-            tray.shutdown();
-        });
+        addItem(tray.getMenu(),
+                "Quit",
+                e -> {
+                    player.stop();
+                    player.quit();
+                    tray.shutdown();
+                });
     }
 
     private Image loadImage(String filename) {
         try {
             return ImageIO.read(Tray.class.getResourceAsStream(filename));
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Error loading image {}", filename);
         }
         return null;
     }
 
-    private void createStationItems() {
-        List<Map> stations = readStations();
+    private void createMenuItems() {
+        Group root = readConfig();
+        if (root != null) {
+            createGroupStations(tray.getMenu(), root);
+        }
+    }
+
+    private void createGroupStations(Menu menu, Group group) {
+        List<Station> stations = group.getStations();
         if (stations != null) {
-            for (Map station : stations) {
-                String title = (String) station.get("title");
-                String mrl = (String) station.get("mrl");
-                addItem(title, e -> {
-                    player.stop();
-                    player.play(mrl);
-                    tray.setStatus("Playing " + title);
-                });
+            for (Station station : stations) {
+                addItem(menu,
+                        station.getTitle(),
+                        e -> {
+                            player.stop();
+                            player.play(station.getMrl());
+                            tray.setStatus("Playing " + station.getTitle());
+                        });
+            }
+        }
+        List<Group> subGroups = group.getGroups();
+        if (subGroups != null) {
+            for (Group subGroup : subGroups) {
+                Menu subMenu = new Menu(subGroup.getTitle());
+                menu.add(subMenu);
+                createGroupStations(subMenu, subGroup);
             }
         }
     }
 
-    private List<Map> readStations() {
+    private Group readConfig() {
         YamlReader reader = new YamlReader(new InputStreamReader(Tray.class.getResourceAsStream("/stations.yml")));
+        reader.getConfig().setClassTag("group", Group.class);
+        reader.getConfig().setClassTag("station", Station.class);
         try {
-            Object object = reader.read();
-            return (List<Map>) object;
+            Group root = reader.read(Group.class);
+            if (root != null && "ROOT".equals(root.getTitle())) {
+                return root;
+            }
         } catch (YamlException e) {
-            e.printStackTrace();
+            LOGGER.error("Error parsing station config: {}", e.getMessage());
         }
         return null;
     }
 
-    private void addItem(String title, Consumer<ActionEvent> action) {
+    private void addItem(Menu menu, String title, Consumer<ActionEvent> action) {
         JMenuItem item = new JMenuItem(title);
-        ImageIcon imageIcon = new ImageIcon(loadImage("/icon-white.png"));
+        ImageIcon imageIcon = new ImageIcon(loadImage("/transmission-white.png"));
         item.setIcon(imageIcon);
         // TODO: Dummy image
         item.addActionListener(action::accept);
-        tray.getMenu().add(item);
+        menu.add(item);
     }
 }

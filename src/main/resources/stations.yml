@@ -1,4 +1,45 @@
-- title: NSB Radio
-  mrl: http://live.nsbradio.co.uk:8904
-- title: radio x
-  mrl: http://stream.radiox.de:8000/live
+title: ROOT
+stations:
+  - !station
+    title: NSB Radio
+    mrl: http://live.nsbradio.co.uk:8904
+  - !station
+    title: radio x
+    mrl: http://stream.radiox.de:8000/live
+groups:
+  - !group
+    title: Digitally Imported
+    stations:
+      - !station
+        title: Breaks
+        mrl: http://pub1.diforfree.org:8000/di_breaks_hi
+      - !station
+        title: Minimal
+        mrl: http://pub1.diforfree.org:8000/di_minimal_hi
+  - !group
+    title: FluxFM
+    stations:
+      - !station
+        title: Livestream
+        mrl: http://streams.fluxfm.de/live/mp3-128/audio/
+      - !station
+        title: FluxKompensator
+        mrl: http://streams.fluxfm.de/fluxkompensator/mp3-128/audio/
+      - !station
+        title: Clubsandwich
+        mrl: http://streams.fluxfm.de/clubsandwich/mp3-128/audio/
+      - !station
+        title: Ohrspiel
+        mrl: http://streams.fluxfm.de/ohrspiel/mp3-128/audio/
+
+# http://nsbradio.co.uk/listen128k.pls
+# http://metafiles.gl-systemhaus.de/hr/hrinfo_2.m3u
+# http://mp3.planetradio.de/planetradio/hqlivestream.aac
+
+# 404
+# http://streams.br-online.de/br-klassik_2.asx
+
+# http://www.ebm-radio.de/tunein/EBM_Radio-wma.asx
+
+# MMS with WMA
+# mms://apasf.apa.at/radio_kaernten
