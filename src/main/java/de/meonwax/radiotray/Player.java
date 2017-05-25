@@ -78,8 +78,11 @@ public class Player {
     }
 
     public void stop() {
-        LOGGER.info("Stopping playback");
-        mediaPlayerComponent.getMediaPlayer().stop();
+        MediaPlayer player = mediaPlayerComponent.getMediaPlayer();
+        if (player.isPlaying()) {
+            LOGGER.info("Stopping playback");
+            player.stop();
+        }
     }
 
     public void quit() {
